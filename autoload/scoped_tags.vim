@@ -4,30 +4,8 @@
 " (WARNING: with the possible exception of the tags file format,
 "           nothing here is considered stable yet!-)
 
-" Author: Claus Reinke
-
-" Scope-aware tag support, using extended tags file format
-"
-"   3.  {tagname}		{TAB} {tagfile} {TAB} {tagaddress} {term} {field} ..
-"
-" with a field that indicates tag scope as a line:column range
-"
-"   scope:startline:startpos-endline:endpos
-"
-" We can then figure out which tags are in scope at cursor position,
-" and in what range to search for other occurrences of a tag (blanking 
-" out nested scopes where our tag scope is shadowed). By giving the
-" scopes as line:column-ranges, the handling of scopes can be mostly
-" language-independent.
-"
-" To generate scope-aware tags files, you'll need a scope-tracking 
-" parser for your language; the parser also needs to be able to associate
-" source location information with scopes; not all parsers track scopes,
-" and those that do might throw away source locations when no parse errors
-" are generated, or only have location information for tokens, not for
-" language constructs; all compiler frontends and static analysis tools
-" should track scope information (e.g., for Javascript, I'm currently
-" using an extended jsctags to generate the tags).
+" Author:  Claus Reinke
+" project: https://github.com/clausreinke/scoped_tags
 
 " TODO: - separate Javascript-specific from general functionality
 "       - where should the key definitions go?
