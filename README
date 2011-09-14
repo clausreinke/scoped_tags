@@ -21,14 +21,19 @@ language constructs; all compiler frontends and static analysis tools
 should track scope information (e.g., for Javascript, I'm currently
 using an extended jsctags to generate the tags).
 
-scoped_tags.vim is an autoload file. Main operations are
+scoped_tags.vim is an autoload file (instead of sourcing it manually,
+you can put it in an autoload folder in your runtimepath). The main
+operations are
 
   " goto tag definition in scope
   map _] :call scoped_tags#GotoTagDefinition(expand("<cword>"))<cr>
+
+  " preview tag definition in scope
+  map _} :call scoped_tags#GotoTagDefinition(expand("<cword>"),1)<cr>
 
   " cycle forward/backward through tag occurrences in scope
   map _* :call scoped_tags#CycleTagOccurrence(expand("<cword>"),'')<cr>
   map _# :call scoped_tags#CycleTagOccurrence(expand("<cword>"),'b')<cr>
 
-(you can map these functions yourself, or call scoped_tags#DefaultKeyBindings()
-to get the mappings above).
+(you can map these functions yourself, or :call scoped_tags#DefaultKeyBindings()
+to get the mappings above; such a key mapping should go in your .vimrc).

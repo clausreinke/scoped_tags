@@ -18,19 +18,21 @@
 function! scoped_tags#DefaultKeyBindings()
   " goto tag definitions for .member (not currently unique)
   " (just a shorthand for {Visual}g])
-  map _g :exe ":tselect .".expand("<cword>")<cr>
+  " map _g :exe ":tselect .".expand("<cword>")<cr>
 
   " goto tag definition for .member (not currently unique)
-  map _. :call scoped_tags#GotoTagDefinition(".".expand("<cword>"))<cr>
+  " map _. :call scoped_tags#GotoTagDefinition(".".expand("<cword>"),0)<cr>
 
   " goto tag definition for assignment (not currently unique)
-  map _= :call scoped_tags#GotoTagDefinition("=".expand("<cword>"))<cr>
+  " map _= :call scoped_tags#GotoTagDefinition("=".expand("<cword>"),0)<cr>
   " cycle forward/backward through assignments to scoped tag
-  map _=* :call scoped_tags#CycleTagOccurrence("=".expand("<cword>"),'')<cr>
-  map _=# :call scoped_tags#CycleTagOccurrence("=".expand("<cword>"),'b')<cr>
+  " map _=* :call scoped_tags#CycleTagOccurrence("=".expand("<cword>"),'')<cr>
+  " map _=# :call scoped_tags#CycleTagOccurrence("=".expand("<cword>"),'b')<cr>
 
   " goto tag definition in scope
-  map _] :call scoped_tags#GotoTagDefinition(expand("<cword>"))<cr>
+  map _] :call scoped_tags#GotoTagDefinition(expand("<cword>"),0)<cr>
+  " preview tag definition in scope
+  map _} :call scoped_tags#GotoTagDefinition(expand("<cword>"),1)<cr>
   " cycle forward/backward through tag occurrences in scope
   map _* :call scoped_tags#CycleTagOccurrence(expand("<cword>"),'')<cr>
   map _# :call scoped_tags#CycleTagOccurrence(expand("<cword>"),'b')<cr>
@@ -54,14 +56,22 @@ endfunction
 
 " goto definition of id, if one is in scope at cursor position
 " (analogue to ctrl-], but scoped)
-function! scoped_tags#GotoTagDefinition(id)
+" preview definition of id, if a:preview==1
+" (analogue to ctrl-W }, but scoped)
+function! scoped_tags#GotoTagDefinition(id,preview)
   try
     let [tag,rangePat] = scoped_tags#FindTagInScope(a:id,0)
     normal m'
-    if bufexists(tag['filename'])
-      exe "buffer ".tag['filename']
+    if a:preview==1
+      let cmd = escape(tag['cmd'],' ')
+      exe "pedit +".cmd." ".tag['filename']
+      return
     else
-      exe "edit ".tag['filename']
+      if bufexists(tag['filename'])
+        exe "buffer ".tag['filename']
+      else
+        exe "edit ".tag['filename']
+      endif
     endif
     call cursor(tag['lineno'],1)
     set hlsearch
