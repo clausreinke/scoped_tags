@@ -64,7 +64,7 @@ function! scoped_tags#GotoTagDefinition(id,preview)
     normal m'
     if a:preview==1
       let cmd = escape(tag['cmd'],' ')
-      exe "pedit +".cmd." ".tag['filename']
+      exe "silent pedit +".cmd." ".tag['filename']
       return
     else
       if bufexists(tag['filename'])
