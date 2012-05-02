@@ -24,9 +24,10 @@ all compiler frontends and static analysis tools should track scope and source
 location information in some form, so you might be able to generate scoped tags
 with limited effort.
 
-For Javascript, I'm currently using an extended jsctags to generate the tags: 
-
-  https://github.com/clausreinke/doctorjs
+For Javascript, I'm currently using [estr tags](https://github.com/clausreinke/estr)
+to generate the tags. There is also an [extended jsctags](https://github.com/clausreinke/doctorjs).
+The former is based on esprima and likely to be easier to use, the latter is
+based on narcissus/doctorjs.
 
 If you do add scoped tags generation for other languages, please let me know.
 
